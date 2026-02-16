@@ -1,0 +1,41 @@
+<h1>Open Loops</h1>
+
+<h2>New task</h2>
+<%= form_with model: @task, url: tasks_path do |f| %>
+  <div>
+    <%= f.label :title %><br>
+    <%= f.text_field :title, required: true, autofocus: true %>
+  </div>
+
+  <div style="margin-top: 8px;">
+    <%= f.label :importance, "I" %>
+    <%= f.number_field :importance, in: 1..5 %>
+
+    <%= f.label :urgency, "U" %>
+    <%= f.number_field :urgency, in: 1..5 %>
+
+    <%= f.label :effort, "E" %>
+    <%= f.number_field :effort, in: 1..5 %>
+  </div>
+
+  <div style="margin-top: 8px;">
+    <%= f.submit "Create" %>
+  </div>
+<% end %>
+
+<hr>
+
+<h2>Unscored</h2>
+<%= render partial: "table", locals: { tasks: @unscored } %>
+
+<h2>Quick Wins (E ≤ 2)</h2>
+<%= render partial: "table", locals: { tasks: @quick_wins } %>
+
+<h2>Later (I ≤ 3 AND U ≤ 3)</h2>
+<%= render partial: "table", locals: { tasks: @later } %>
+
+<h2>Active Projects</h2>
+<%= render partial: "table", locals: { tasks: @active_projects } %>
+
+<h2>Completed</h2>
+<%= render partial: "table", locals: { tasks: @completed } %>

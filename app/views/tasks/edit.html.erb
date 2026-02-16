@@ -1,0 +1,29 @@
+<h1>Edit / Score</h1>
+
+<%= form_with model: @task do |f| %>
+  <div>
+    <%= f.label :title %><br>
+    <%= f.text_field :title, required: true, autofocus: true %>
+  </div>
+
+  <div style="margin-top: 8px;">
+    <%= f.label :importance, "Importance (1-5)" %><br>
+    <%= f.number_field :importance, in: 1..5 %>
+  </div>
+
+  <div style="margin-top: 8px;">
+    <%= f.label :urgency, "Urgency (1-5)" %><br>
+    <%= f.number_field :urgency, in: 1..5 %>
+  </div>
+
+  <div style="margin-top: 8px;">
+    <%= f.label :effort, "Effort (1-5)" %><br>
+    <%= f.number_field :effort, in: 1..5 %>
+  </div>
+
+  <div style="margin-top: 12px;">
+    <%= f.submit "Save" %>
+  </div>
+<% end %>
+
+<p><%= link_to "Back", root_path %></p>
