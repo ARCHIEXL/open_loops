@@ -134,7 +134,7 @@ a:hover { color: var(--text-primary); }
 .header-inner {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: center;
   gap: var(--space-2);
   padding-top: var(--space-3);
   padding-bottom: var(--space-3);
@@ -146,7 +146,7 @@ a:hover { color: var(--text-primary); }
 }
 
 .brand-logo {
-  height: 32px;
+  height: 64px;
   width: auto;
   display: none;
 }
