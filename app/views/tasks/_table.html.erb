@@ -1,14 +1,15 @@
 <% if tasks.any? %>
   <ul class="task-list" role="list">
     <% tasks.each do |t| %>
-      <li class="task <%= 'task--completed' if t.completed_at.present? %>"
+      <% bucket = t.bucket.to_s %>
+      <li class="task task--<%= bucket %> <%= 'task--completed' if t.completed_at.present? %>"
           data-task-row-id="<%= t.id %>">
 
         <svg class="loop-icon" viewBox="0 0 64 32" aria-hidden="true">
           <path d="M20 8c-7 0-12 5-12 8s5 8 12 8c10 0 14-16 24-16 7 0 12 5 12 8s-5 8-12 8c-10 0-14-16-24-16z" />
         </svg>
 
-        <div>
+        <div class="task__body">
           <p class="task__title"><%= t.title %></p>
 
           <div class="task__meta">
@@ -16,31 +17,59 @@
             <span class="pill">U <%= t.urgency || "—" %></span>
             <span class="pill">E <%= t.effort || "—" %></span>
           </div>
+        </div>
 
-          <div class="task__actions">
-            <%= link_to "Define", edit_task_path(t), class: "btn btn--ghost" %>
+        <div class="task__actions" aria-label="Actions">
+          <%= link_to edit_task_path(t), class: "icon-btn icon-btn--ghost", aria: { label: "Define" } do %>
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M12 8a4 4 0 100 8 4 4 0 000-8z" fill="none" stroke="currentColor" stroke-width="1.8"/>
+              <path d="M19.4 15a7.8 7.8 0 000-6l-2 1.2a5.8 5.8 0 010 3.6L19.4 15zM4.6 9a7.8 7.8 0 000 6l2-1.2a5.8 5.8 0 010-3.6L4.6 9zM9 4.6a7.8 7.8 0 006 0l-1.2 2a5.8 5.8 0 01-3.6 0L9 4.6zM15 19.4a7.8 7.8 0 01-6 0l1.2-2a5.8 5.8 0 003.6 0l1.2 2z"
+                    fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+            </svg>
+            <span class="sr-only">Define</span>
+          <% end %>
 
-            <%= button_to (t.completed_at ? "Reopen" : "Close"),
-                          toggle_complete_task_path(t),
-                          method: :patch,
-                          class: "btn btn--ghost",
-                          form: {
-                            class: "inline-form",
-                            data: {
-                              controller: "closure",
-                              action: "submit->closure#remember",
-                              "closure-task-id-value": t.id,
-                              "closure-intent-value": (t.completed_at ? "reopen" : "close")
-                            }
-                          } %>
+          <%= button_to toggle_complete_task_path(t),
+                        method: :patch,
+                        class: "icon-btn icon-btn--ghost",
+                        form: {
+                          class: "inline-form",
+                          data: {
+                            controller: "closure",
+                            action: "submit->closure#remember",
+                            "closure-task-id-value": t.id,
+                            "closure-intent-value": (t.completed_at ? "reopen" : "close")
+                          }
+                        },
+                        aria: { label: (t.completed_at ? "Reopen" : "Close") } do %>
 
-            <%= button_to "Remove",
-                          task_path(t),
-                          method: :delete,
-                          data: { turbo_confirm: "Remove this loop?" },
-                          class: "btn btn--ghost btn--danger",
-                          form: { class: "inline-form" } %>
-          </div>
+            <% if t.completed_at.present? %>
+              <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M7 7h6a5 5 0 010 10H8" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+                <path d="M8 13l-3 4 3 4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <span class="sr-only">Reopen</span>
+            <% else %>
+              <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M20 7L10 17l-5-5" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <span class="sr-only">Close</span>
+            <% end %>
+          <% end %>
+
+          <%= button_to task_path(t),
+                        method: :delete,
+                        data: { turbo_confirm: "Remove this loop?" },
+                        class: "icon-btn icon-btn--ghost icon-btn--danger",
+                        form: { class: "inline-form" },
+                        aria: { label: "Remove" } do %>
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M6 7h12l-1 14H7L6 7z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+              <path d="M9 7V5h6v2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+              <path d="M10 11v6M14 11v6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+            </svg>
+            <span class="sr-only">Remove</span>
+          <% end %>
         </div>
       </li>
     <% end %>

@@ -10,20 +10,35 @@
       <%= f.text_field :title, required: true, autofocus: true, class: "input" %>
     </div>
 
-    <div class="form-row form-row--scores">
-      <div>
-        <%= f.label :importance, "Importance", class: "label meta" %>
-        <%= f.number_field :importance, in: 1..5, class: "input input--score" %>
+    <div class="form-row form-row--scores score-block">
+      <div class="score-field">
+        <div class="label meta">Importance</div>
+        <div class="score-picker" role="radiogroup" aria-label="Importance">
+          <%= f.collection_radio_buttons :importance, (1..5).to_a, :to_s, :to_s do |b| %>
+            <%= b.radio_button(class: "score-input") %>
+            <%= b.label(class: "score-chip") { b.text } %>
+          <% end %>
+        </div>
       </div>
 
-      <div>
-        <%= f.label :urgency, "Urgency", class: "label meta" %>
-        <%= f.number_field :urgency, in: 1..5, class: "input input--score" %>
+      <div class="score-field">
+        <div class="label meta">Urgency</div>
+        <div class="score-picker" role="radiogroup" aria-label="Urgency">
+          <%= f.collection_radio_buttons :urgency, (1..5).to_a, :to_s, :to_s do |b| %>
+            <%= b.radio_button(class: "score-input") %>
+            <%= b.label(class: "score-chip") { b.text } %>
+          <% end %>
+        </div>
       </div>
 
-      <div>
-        <%= f.label :effort, "Effort", class: "label meta" %>
-        <%= f.number_field :effort, in: 1..5, class: "input input--score" %>
+      <div class="score-field">
+        <div class="label meta">Effort</div>
+        <div class="score-picker" role="radiogroup" aria-label="Effort">
+          <%= f.collection_radio_buttons :effort, (1..5).to_a, :to_s, :to_s do |b| %>
+            <%= b.radio_button(class: "score-input") %>
+            <%= b.label(class: "score-chip") { b.text } %>
+          <% end %>
+        </div>
       </div>
     </div>
 

@@ -1,0 +1,12 @@
+<section class="card">
+  <div class="section-head">
+    <h2 class="h2">Unscored</h2>
+    <span class="count"><%= @unscored.count %></span>
+  </div>
+
+  <p class="meta">Captured, but not yet defined.</p>
+
+  <div style="margin-top: var(--space-2);">
+    <%= render partial: "table", locals: { tasks: @unscored } %>
+  </div>
+</section>

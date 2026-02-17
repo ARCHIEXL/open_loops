@@ -1,0 +1,25 @@
+<div class="grid">
+  <section class="card">
+    <div class="section-head">
+      <h3 class="h3">Later</h3>
+      <span class="count"><%= @later.count %></span>
+    </div>
+
+    <p class="meta">I ≤ 3 and U ≤ 3, E > 2</p>
+
+    <div style="margin-top: var(--space-2);">
+      <%= render partial: "table", locals: { tasks: @later } %>
+    </div>
+  </section>
+
+  <section class="card">
+    <div class="section-head">
+      <h3 class="h3">Completed</h3>
+      <span class="count"><%= @completed.count %></span>
+    </div>
+
+    <div style="margin-top: var(--space-2);">
+      <%= render partial: "table", locals: { tasks: @completed } %>
+    </div>
+  </section>
+</div>

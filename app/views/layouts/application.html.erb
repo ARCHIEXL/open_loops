@@ -25,15 +25,33 @@
   <body class="app">
     <header class="app-header">
       <div class="container header-inner">
-        <a class="brand" href="<%= root_path %>">
+        <!-- Left: logomark -->
+        <a class="brand brand--mark" href="<%= root_path %>" aria-label="Open Loops (Now)">
           <%= image_tag "brand/logomark-dark.png",
                         class: "brand-logo brand-logo--dark",
-                        alt: "Open Loops" %>
+                        alt: "" %>
 
           <%= image_tag "brand/logomark-light.png",
                         class: "brand-logo brand-logo--light",
-                        alt: "Open Loops" %>
+                        alt: "" %>
         </a>
+
+        <!-- Right: nav -->
+        <nav class="top-actions" aria-label="Primary">
+          <%= link_to inbox_path, class: "icon-btn", aria: { label: "Inbox (Unscored)" } do %>
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M4 4h16v10h-4l-2 3h-4l-2-3H4V4z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+            </svg>
+            <span class="sr-only">Inbox</span>
+          <% end %>
+
+          <%= link_to archive_path, class: "icon-btn", aria: { label: "Archive (Later and Completed)" } do %>
+            <svg class="icon" viewBox="0 0 24 24" aria-hidden="true">
+              <path d="M4 7h16v14H4V7zm2-4h12l2 4H4l2-4z" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linejoin="round"/>
+            </svg>
+            <span class="sr-only">Archive</span>
+          <% end %>
+        </nav>
       </div>
     </header>
 

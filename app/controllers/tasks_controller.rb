@@ -3,24 +3,20 @@ class TasksController < ApplicationController
 
   def index
     @task = Task.new
+    load_now_lists
+  end
 
-    base   = Task.incomplete
-    scored = base.scored
-
+  def inbox
+    base = Task.incomplete
     @unscored = base.unscored.order(created_at: :desc)
+  end
 
-    @quick_wins = scored
-      .where("effort <= 2")
-      .order(updated_at: :desc)
+  def archive
+    scored = Task.incomplete.scored
 
     @later = scored
       .where("effort > 2")
       .where("importance <= 3 AND urgency <= 3")
-      .order(updated_at: :desc)
-
-    @active_projects = scored
-      .where("effort > 2")
-      .where("NOT (importance <= 3 AND urgency <= 3)")
       .order(updated_at: :desc)
 
     @completed = Task.complete.order(completed_at: :desc).limit(200)
@@ -29,9 +25,9 @@ class TasksController < ApplicationController
   def create
     @task = Task.new(task_params)
     if @task.save
-      redirect_to root_path
+      redirect_back fallback_location: root_path
     else
-      index
+      load_now_lists
       render :index, status: :unprocessable_entity
     end
   end
@@ -40,7 +36,7 @@ class TasksController < ApplicationController
 
   def update
     if @task.update(task_params)
-      redirect_to root_path
+      redirect_back fallback_location: root_path
     else
       render :edit, status: :unprocessable_entity
     end
@@ -48,15 +44,28 @@ class TasksController < ApplicationController
 
   def toggle_complete
     @task.update!(completed_at: @task.completed_at ? nil : Time.current)
-    redirect_to root_path
+    redirect_back fallback_location: root_path
   end
 
   def destroy
     @task.destroy
-    redirect_to root_path
+    redirect_back fallback_location: root_path
   end
 
   private
+
+  def load_now_lists
+    scored = Task.incomplete.scored
+
+    @quick_wins = scored
+      .where("effort <= 2")
+      .order(updated_at: :desc)
+
+    @active_projects = scored
+      .where("effort > 2")
+      .where("NOT (importance <= 3 AND urgency <= 3)")
+      .order(updated_at: :desc)
+  end
 
   def set_task
     @task = Task.find(params[:id])

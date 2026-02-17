@@ -8,40 +8,55 @@
     <div class="form-row form-row--primary">
       <div>
         <%= f.label :title, "Loop", class: "label" %>
-        <%= f.text_field :title, required: true, autofocus: true, class: "input", placeholder: "Add a loop…" %>
+        <%= f.text_field :title,
+                         required: true,
+                         autofocus: true,
+                         class: "input",
+                         placeholder: "Add a loop…" %>
       </div>
 
       <%= f.submit "Capture", class: "btn btn--primary" %>
     </div>
 
-    <div class="form-row form-row--scores">
-      <div>
-        <%= f.label :importance, "Importance", class: "label meta" %>
-        <%= f.number_field :importance, in: 1..5, class: "input input--score" %>
-      </div>
+    <details class="score-details">
+      <summary class="score-summary meta">Score (optional)</summary>
 
-      <div>
-        <%= f.label :urgency, "Urgency", class: "label meta" %>
-        <%= f.number_field :urgency, in: 1..5, class: "input input--score" %>
-      </div>
+      <div class="form-row form-row--scores score-block">
+        <div class="score-field">
+          <div class="label meta">Importance</div>
+          <div class="score-picker" role="radiogroup" aria-label="Importance">
+            <%= f.collection_radio_buttons :importance, (1..5).to_a, :to_s, :to_s do |b| %>
+              <%= b.radio_button(class: "score-input") %>
+              <%= b.label(class: "score-chip") { b.text } %>
+            <% end %>
+          </div>
+        </div>
 
-      <div>
-        <%= f.label :effort, "Effort", class: "label meta" %>
-        <%= f.number_field :effort, in: 1..5, class: "input input--score" %>
+        <div class="score-field">
+          <div class="label meta">Urgency</div>
+          <div class="score-picker" role="radiogroup" aria-label="Urgency">
+            <%= f.collection_radio_buttons :urgency, (1..5).to_a, :to_s, :to_s do |b| %>
+              <%= b.radio_button(class: "score-input") %>
+              <%= b.label(class: "score-chip") { b.text } %>
+            <% end %>
+          </div>
+        </div>
+
+        <div class="score-field">
+          <div class="label meta">Effort</div>
+          <div class="score-picker" role="radiogroup" aria-label="Effort">
+            <%= f.collection_radio_buttons :effort, (1..5).to_a, :to_s, :to_s do |b| %>
+              <%= b.radio_button(class: "score-input") %>
+              <%= b.label(class: "score-chip") { b.text } %>
+            <% end %>
+          </div>
+        </div>
       </div>
-    </div>
+    </details>
   <% end %>
 </section>
 
 <div class="grid">
-  <section class="card">
-    <div class="section-head">
-      <h3 class="h3">Unscored</h3>
-      <span class="count"><%= @unscored.count %></span>
-    </div>
-    <%= render partial: "table", locals: { tasks: @unscored } %>
-  </section>
-
   <section class="card">
     <div class="section-head">
       <h3 class="h3">Quick Wins</h3>
@@ -55,28 +70,12 @@
 
   <section class="card">
     <div class="section-head">
-      <h3 class="h3">Later</h3>
-      <span class="count"><%= @later.count %></span>
-    </div>
-    <p class="meta">I ≤ 3 and U ≤ 3</p>
-    <div style="margin-top: var(--space-2);">
-      <%= render partial: "table", locals: { tasks: @later } %>
-    </div>
-  </section>
-
-  <section class="card">
-    <div class="section-head">
-      <h3 class="h3">Active Projects</h3>
+      <h3 class="h3">Active</h3>
       <span class="count"><%= @active_projects.count %></span>
     </div>
-    <%= render partial: "table", locals: { tasks: @active_projects } %>
-  </section>
-
-  <section class="card" style="grid-column: 1 / -1;">
-    <div class="section-head">
-      <h3 class="h3">Completed</h3>
-      <span class="count"><%= @completed.count %></span>
+    <p class="meta">Everything else scored</p>
+    <div style="margin-top: var(--space-2);">
+      <%= render partial: "table", locals: { tasks: @active_projects } %>
     </div>
-    <%= render partial: "table", locals: { tasks: @completed } %>
   </section>
 </div>
