@@ -140,10 +140,19 @@ a:hover { color: var(--text-primary); }
   padding-bottom: var(--space-3);
 }
 
+.brand {
+  display: flex;
+  align-items: center;
+}
+
 .brand-logo {
-  height: 22px;
+  height: 32px;
   width: auto;
   display: none;
+}
+
+@media (max-width: 640px) {
+  .brand-logo { height: 28px; }
 }
 
 .brand-logo--dark { display: inline-block; }
@@ -208,7 +217,7 @@ a:hover { color: var(--text-primary); }
 @media (min-width: 640px) {
   .form-row--primary {
     grid-template-columns: 1fr auto;
-    align-items: center;
+    align-items: end;
   }
 
   .form-row--scores {
@@ -252,6 +261,11 @@ a:hover { color: var(--text-primary); }
    --------------------------------------- */
 
 .btn {
+  font: inherit;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
   appearance: none;
   border: 1px solid transparent;
   background: var(--bg-surface);
@@ -362,7 +376,10 @@ a:hover { color: var(--text-primary); }
   flex-wrap: wrap;
 }
 
-.inline-form { display: inline; }
+.inline-form {
+  display: inline-block;
+  margin: 0;
+}
 
 /* Loop icon */
 .loop-icon {
