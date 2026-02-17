@@ -1,41 +1,82 @@
-<h1>Open Loops</h1>
-
-<h2>New task</h2>
-<%= form_with model: @task, url: tasks_path do |f| %>
-  <div>
-    <%= f.label :title %><br>
-    <%= f.text_field :title, required: true, autofocus: true %>
+<section class="card">
+  <div class="section-head">
+    <h2 class="h2">Capture</h2>
+    <span class="meta">Score optional</span>
   </div>
 
-  <div style="margin-top: 8px;">
-    <%= f.label :importance, "I" %>
-    <%= f.number_field :importance, in: 1..5 %>
+  <%= form_with model: @task, url: tasks_path, class: "form" do |f| %>
+    <div class="form-row form-row--primary">
+      <div>
+        <%= f.label :title, "Loop", class: "label" %>
+        <%= f.text_field :title, required: true, autofocus: true, class: "input", placeholder: "Add a loop…" %>
+      </div>
 
-    <%= f.label :urgency, "U" %>
-    <%= f.number_field :urgency, in: 1..5 %>
+      <%= f.submit "Capture", class: "btn btn--primary" %>
+    </div>
 
-    <%= f.label :effort, "E" %>
-    <%= f.number_field :effort, in: 1..5 %>
-  </div>
+    <div class="form-row form-row--scores">
+      <div>
+        <%= f.label :importance, "Importance", class: "label meta" %>
+        <%= f.number_field :importance, in: 1..5, class: "input input--score" %>
+      </div>
 
-  <div style="margin-top: 8px;">
-    <%= f.submit "Create" %>
-  </div>
-<% end %>
+      <div>
+        <%= f.label :urgency, "Urgency", class: "label meta" %>
+        <%= f.number_field :urgency, in: 1..5, class: "input input--score" %>
+      </div>
 
-<hr>
+      <div>
+        <%= f.label :effort, "Effort", class: "label meta" %>
+        <%= f.number_field :effort, in: 1..5, class: "input input--score" %>
+      </div>
+    </div>
+  <% end %>
+</section>
 
-<h2>Unscored</h2>
-<%= render partial: "table", locals: { tasks: @unscored } %>
+<div class="grid">
+  <section class="card">
+    <div class="section-head">
+      <h3 class="h3">Unscored</h3>
+      <span class="count"><%= @unscored.count %></span>
+    </div>
+    <%= render partial: "table", locals: { tasks: @unscored } %>
+  </section>
 
-<h2>Quick Wins (E ≤ 2)</h2>
-<%= render partial: "table", locals: { tasks: @quick_wins } %>
+  <section class="card">
+    <div class="section-head">
+      <h3 class="h3">Quick Wins</h3>
+      <span class="count"><%= @quick_wins.count %></span>
+    </div>
+    <p class="meta">E ≤ 2</p>
+    <div style="margin-top: var(--space-2);">
+      <%= render partial: "table", locals: { tasks: @quick_wins } %>
+    </div>
+  </section>
 
-<h2>Later (I ≤ 3 AND U ≤ 3)</h2>
-<%= render partial: "table", locals: { tasks: @later } %>
+  <section class="card">
+    <div class="section-head">
+      <h3 class="h3">Later</h3>
+      <span class="count"><%= @later.count %></span>
+    </div>
+    <p class="meta">I ≤ 3 and U ≤ 3</p>
+    <div style="margin-top: var(--space-2);">
+      <%= render partial: "table", locals: { tasks: @later } %>
+    </div>
+  </section>
 
-<h2>Active Projects</h2>
-<%= render partial: "table", locals: { tasks: @active_projects } %>
+  <section class="card">
+    <div class="section-head">
+      <h3 class="h3">Active Projects</h3>
+      <span class="count"><%= @active_projects.count %></span>
+    </div>
+    <%= render partial: "table", locals: { tasks: @active_projects } %>
+  </section>
 
-<h2>Completed</h2>
-<%= render partial: "table", locals: { tasks: @completed } %>
+  <section class="card" style="grid-column: 1 / -1;">
+    <div class="section-head">
+      <h3 class="h3">Completed</h3>
+      <span class="count"><%= @completed.count %></span>
+    </div>
+    <%= render partial: "table", locals: { tasks: @completed } %>
+  </section>
+</div>

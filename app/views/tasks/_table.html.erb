@@ -1,40 +1,50 @@
-<table border="1" cellpadding="6" cellspacing="0" style="width: 100%; border-collapse: collapse;">
-  <thead>
-    <tr>
-      <th>Task</th>
-      <th>I</th>
-      <th>U</th>
-      <th>E</th>
-      <th>Bucket</th>
-      <th>Actions</th>
-    </tr>
-  </thead>
-
-  <tbody>
+<% if tasks.any? %>
+  <ul class="task-list" role="list">
     <% tasks.each do |t| %>
-      <tr>
-        <td><%= t.title %></td>
-        <td><%= t.importance %></td>
-        <td><%= t.urgency %></td>
-        <td><%= t.effort %></td>
-        <td><%= t.bucket %></td>
-        <td>
-          <%= link_to "Edit / Score", edit_task_path(t) %>
-          <%= button_to (t.completed_at ? "Reopen" : "Complete"),
-                        toggle_complete_task_path(t),
-                        method: :patch,
-                        form: { style: "display:inline;" } %>
-          <%= button_to "Delete",
-                        task_path(t),
-                        method: :delete,
-                        data: { turbo_confirm: "Delete?" },
-                        form: { style: "display:inline;" } %>
-        </td>
-      </tr>
-    <% end %>
-  </tbody>
-</table>
+      <li class="task <%= 'task--completed' if t.completed_at.present? %>"
+          data-task-row-id="<%= t.id %>">
 
-<% if tasks.empty? %>
-  <p><em>None</em></p>
+        <svg class="loop-icon" viewBox="0 0 64 32" aria-hidden="true">
+          <path d="M20 8c-7 0-12 5-12 8s5 8 12 8c10 0 14-16 24-16 7 0 12 5 12 8s-5 8-12 8c-10 0-14-16-24-16z" />
+        </svg>
+
+        <div>
+          <p class="task__title"><%= t.title %></p>
+
+          <div class="task__meta">
+            <span class="pill">I <%= t.importance || "—" %></span>
+            <span class="pill">U <%= t.urgency || "—" %></span>
+            <span class="pill">E <%= t.effort || "—" %></span>
+          </div>
+
+          <div class="task__actions">
+            <%= link_to "Define", edit_task_path(t), class: "btn btn--ghost" %>
+
+            <%= button_to (t.completed_at ? "Reopen" : "Close"),
+                          toggle_complete_task_path(t),
+                          method: :patch,
+                          class: "btn btn--ghost",
+                          form: {
+                            class: "inline-form",
+                            data: {
+                              controller: "closure",
+                              action: "submit->closure#remember",
+                              "closure-task-id-value": t.id,
+                              "closure-intent-value": (t.completed_at ? "reopen" : "close")
+                            }
+                          } %>
+
+            <%= button_to "Remove",
+                          task_path(t),
+                          method: :delete,
+                          data: { turbo_confirm: "Remove this loop?" },
+                          class: "btn btn--ghost btn--danger",
+                          form: { class: "inline-form" } %>
+          </div>
+        </div>
+      </li>
+    <% end %>
+  </ul>
+<% else %>
+  <p class="empty">None</p>
 <% end %>

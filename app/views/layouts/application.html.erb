@@ -1,27 +1,43 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
   <head>
-    <title>OpenLoops</title>
+    <title>Open Loops</title>
     <meta name="viewport" content="width=device-width,initial-scale=1">
     <%= csrf_meta_tags %>
     <%= csp_meta_tag %>
 
+    <!-- Fonts (Suisse Intl not shipped; Inter + IBM Plex Mono per style guide) -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+
     <%= stylesheet_link_tag "application", "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
+
     <link rel="manifest" href="/manifest.webmanifest">
-    <meta name="theme-color" content="#ffffff">
+    <meta name="theme-color" content="#1A1A1A" media="(prefers-color-scheme: dark)">
+    <meta name="theme-color" content="#F5F4F2" media="(prefers-color-scheme: light)">
     <link rel="apple-touch-icon" href="/icons/icon-192.png">
     <meta name="apple-mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-status-bar-style" content="default">
   </head>
-  <script>
-    document.addEventListener("turbo:load", () => {
-      if ("serviceWorker" in navigator) {
-        navigator.serviceWorker.register("/service-worker.js");
-      }
-    });
-  </script>
-  <body>
-    <%= yield %>
+
+  <body class="app">
+    <header class="app-header">
+      <div class="container header-inner">
+        <a class="brand" href="<%= root_path %>">
+          <%= image_tag "brand/logo-dark.png", class: "brand-logo brand-logo--dark", alt: "Open Loops" %>
+          <%= image_tag "brand/logo-light.png", class: "brand-logo brand-logo--light", alt: "Open Loops" %>
+        </a>
+
+        <div class="header-meta">
+          <span class="meta">Capture · Define · Close</span>
+        </div>
+      </div>
+    </header>
+
+    <main class="container">
+      <%= yield %>
+    </main>
   </body>
 </html>
